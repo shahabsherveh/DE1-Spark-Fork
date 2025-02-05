@@ -127,7 +127,7 @@ def full_deployment(config_file = "configs/instance-cfg.yaml", keypair_path="__t
 
     # Generate a new private/public keypair
     new_ssh_key = generate_keypair(keypath=keypair_path, keyname=keyname)
-    ssh_keys = [new_ssh_key] + configs["ssh_authorized_keys"] if ("ssh_authorized_keys" in configs.keys() and configs["ssh_authorized_keys"] is not None) else []
+    ssh_keys = [new_ssh_key] + (configs["ssh_authorized_keys"] if ("ssh_authorized_keys" in configs.keys() and configs["ssh_authorized_keys"] is not None) else [])
 
     # Perform deployment of headnode
     # rest all will be handled by headnode
