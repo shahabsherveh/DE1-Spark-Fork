@@ -1,0 +1,34 @@
+# A single configration file to rule them all
+
+github_access_token:
+
+ssh_authorized_keys: null
+
+instances:
+  name_prefix: usama              # Used to create the node name
+                                  # Template: prefix-int(4)-headnode
+                                  # Template: prefix-int(4)-worker-n
+  headnode:
+    instance_flavor: ssc.xlarge.highcpu
+    instance_source: Ubuntu 22.04 - 2024.01.15
+    authorized_keys: usama-spark-lecture-key
+    private_network: UPPMAX 2025/1-1 Internal IPv4 Network
+    security_groups:
+      - default
+      - usama-spark-sg
+    floating_ip_pool: null
+    floating_ip_addr: null
+    instance_configs: configs/headnode-cfg.yaml
+  workernodes:
+    numworkers: 10
+    workercfgs:
+      instance_flavor: ssc.xlarge.highcpu
+      instance_source: Ubuntu 22.04 - 2024.01.15
+      authorized_keys: usama-spark-lecture-key
+      private_network: UPPMAX 2025/1-1 Internal IPv4 Network
+      security_groups:
+        - default
+        - usama-spark-sg
+      floating_ip_pool: null
+      floating_ip_addr: null
+      instance_configs: configs/worknode-cfg.yaml

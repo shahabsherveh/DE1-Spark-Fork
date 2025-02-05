@@ -1,0 +1,137 @@
+#cloud-config
+
+apt_update: true
+apt_upgrade: true
+
+manage_etc_hosts: false
+
+users:
+  - name: ubuntu
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    home: /home/ubuntu
+    shell: /bin/bash
+
+packages:
+  - python3-pip
+  - python3-dev
+  - build-essential
+  - tmux
+  - apt-transport-https 
+  - ca-certificates 
+  - curl 
+  - software-properties-common
+
+byobu_default: system
+
+runcmd:
+  - printf "..."
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n\nInstalling Open JDK 11 ...\n"
+  - sudo apt-get install -y openjdk-11-jdk-headless
+  - apt-get update -y
+
+  - printf "..."
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n\nSetting up hosts in /etc/hosts file ...\n"
+  - [ bash,  -c, 'for ((i = 1 ; i <= 255 ; i++)); do echo "192.168.2.${i} de1-spark-host-${i}" >> /etc/hosts; done' ]
+  - sudo hostnamectl set-hostname --static de1-spark-host-$(hostname -I | cut -d " " -f 1 | cut -d "." -f 4)
+  - hostname
+
+  - printf "..."
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n\nDownloading and extracting Hadoop ...\n"
+  - [su, ubuntu, -c, wget -nv https://dlcdn.apache.org/hadoop/common/current/hadoop-3.4.1.tar.gz -P /home/ubuntu/]
+  - [su, ubuntu, -c, tar -zxf /home/ubuntu/hadoop-3.4.1.tar.gz -C /home/ubuntu/]
+  - [su, ubuntu, -c, mv /home/ubuntu/hadoop-3.4.1 /home/ubuntu/hadoop]
+  - [su, ubuntu, -c, chown -R ubuntu:ubuntu /home/ubuntu/hadoop]
+
+  - printf "..."
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n\nDownloading and extracting Spark ...\n"
+  - [su, ubuntu, -c, wget -nv https://dlcdn.apache.org/spark/spark-3.5.4/spark-3.5.4-bin-hadoop3.tgz -P /home/ubuntu/]
+  - [su, ubuntu, -c, tar -zxf /home/ubuntu/spark-3.5.4-bin-hadoop3.tgz -C /home/ubuntu/]
+  - [su, ubuntu, -c, mv /home/ubuntu/spark-3.5.4-bin-hadoop3 /home/ubuntu/spark]
+  - [su, ubuntu, -c, chown -R ubuntu:ubuntu /home/ubuntu/spark]
+
+  - printf "..."
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n\nSetting up required paths for JAVA and SPARK ...\n"
+  - export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+  - export HADOOP_HOME=/home/ubuntu/hadoop
+  - export SPARK_HOME=/home/ubuntu/spark
+  - echo "export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64" >> /home/ubuntu/hadoop/etc/hadoop/hadoop-env.sh
+  - echo "export HADOOP_HOME=/home/ubuntu/hadoop" >> /home/ubuntu/hadoop/etc/hadoop/hadoop-env.sh
+  - echo "export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64" >> /home/ubuntu/.bashrc 
+  - echo "export HADOOP_HOME=/home/ubuntu/hadoop" >> /home/ubuntu/.bashrc
+  - echo "export SPARK_HOME=/home/ubuntu/spark" >> /home/ubuntu/.bashrc
+
+  - printf "..."
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n\nCreate SSH access to self ...\n"  
+  - [su, ubuntu, -c, "ssh-keygen -t rsa -P '' -f /home/ubuntu/.ssh/id_rsa"]
+  - [su, ubuntu, -c, "cat /home/ubuntu/.ssh/id_rsa.pub >> /home/ubuntu/.ssh/authorized_keys"]
+  - [su, ubuntu, -c, "chmod 0600 /home/ubuntu/.ssh/authorized_keys"]
+
+  - printf "..."
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n\nSetup configuration files for HADOOP ...\n"
+  - [su, ubuntu, -c, sed -i -e "s#<configuration>#<configuration>\n<property><name>fs.defaultFS</name><value>hdfs://0.0.0.0:9000</value></property>#g" /home/ubuntu/hadoop/etc/hadoop/core-site.xml]
+  - [su, ubuntu, -c, sed -i -e "s#<configuration>#<configuration>\n<property><name>dfs.namenode.name.dir</name><value>/home/ubuntu/hdfs-data</value></property>\n<property><name>dfs.replication</name><value>2</value></property>#g" /home/ubuntu/hadoop/etc/hadoop/hdfs-site.xml]
+
+  - printf "..."
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n\nStart HDFS daemons ...\n"
+  - [su, ubuntu, -c, "/home/ubuntu/hadoop/bin/hdfs namenode -format"]
+  - [su, ubuntu, -c, "/home/ubuntu/hadoop/bin/hdfs --daemon start namenode"]
+  - [su, ubuntu, -c, "/home/ubuntu/hadoop/bin/hdfs --daemon start datanode"]
+  - [su, ubuntu, -c, "/home/ubuntu/hadoop/sbin/start-dfs.sh"]
+
+  - printf "..."
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n\nStart YARN daemons ...\n"
+  - [su, ubuntu, -c, "/home/ubuntu/hadoop/bin/yarn --daemon start resourcemanager"]
+  - [su, ubuntu, -c, "/home/ubuntu/hadoop/bin/yarn --daemon start nodemanager"]
+  - [su, ubuntu, -c, "/home/ubuntu/hadoop/bin/yarn --daemon start proxyserver"]
+  - [su, ubuntu, -c, "/home/ubuntu/hadoop/sbin/start-yarn.sh"]
+
+  - printf "..."
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n\nStart MapReduce JobHistory Server ...\n"
+  - [su, ubuntu, -c, "/home/ubuntu/hadoop/bin/mapred --daemon start historyserver"]
+
+  - printf "..."
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n\nSetup configuration files for SPARK ...\n"
+  - [su, ubuntu, -c, echo "spark.eventLog.enabled true" >> /home/ubuntu/spark/conf/spark-defaults.conf]
+  - [su, ubuntu, -c, echo "spark.eventLog.compress false" >> /home/ubuntu/spark/conf/spark-defaults.conf]
+  - [su, ubuntu, -c, echo "spark.eventLog.dir hdfs://localhost:9000/spark-logs" >> /home/ubuntu/spark/conf/spark-defaults.conf]
+  - [su, ubuntu, -c, echo "spark.history.fs.logDirectory hdfs://localhost:9000/spark-logs" >> /home/ubuntu/spark/conf/spark-defaults.conf]
+
+  - printf "..."
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n\nStart Spark's master node ...\n"
+  - [su, ubuntu, -c, "/home/ubuntu/spark/sbin/start-master.sh"]
