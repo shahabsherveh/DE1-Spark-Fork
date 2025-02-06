@@ -8,7 +8,7 @@ This repository provides resources, guides, and code examples to help students l
 ---
 
 ## Prerequisites
-Before using this repository, ensure you have the following:
+Before using this repository, you should have:
 - Basic knowledge of Apache Spark and distributed computing.
 - Access to a Spark cluster (deployed for the course).
 - A Spark driver VM configured for submitting applications.
@@ -26,11 +26,12 @@ To run the notebooks and submit applications to the Spark cluster, you need to s
 ---
 
 ## Repository Structure
-The repository is organized as follows:
+The repository for course instance **`DE-2025/`** is organized as follows:
 - **`guides/`**: Contains step-by-step instructions for setting up the Spark cluster and driver VM.
 - **`examples/`**: Includes Jupyter notebooks with code examples.
 - **`data/`**: Sample datasets used in the notebooks.
-- **`spark-deploy/`**: Helper code for deployment of Spark cluster using OpenStack API. DO NOT use this unless you know exactly what you are doing.
+- **`spark-deploy/`**: Helper code for deployment of Spark cluster using OpenStack API. 
+    > **⚠ Warning:** This code is intended for advanced users familiar with OpenStack API. 
 
 ---
 
@@ -48,10 +49,10 @@ This repository is primarily for course material. However, if you find any issue
 ---
 
 ## Acknowledgments
-This repository builds on the work of previous teaching assistants for the Data Engineering 1 course. Special thanks to [Tianru Zhang](https://github.com/JSFRi) for their contributions to the materials and setup instructions.
+This repository builds on the work of previous teaching assistants for the Data Engineering 1 course. Special thanks to [Tianru Zhang](https://github.com/JSFRi) for his contributions to the materials and setup instructions.
 
 ---
 
 ## License
-This repository is licensed under the **Apache License 2.0**. See the LICENSE(LICENSE) file for details.
+This repository is licensed under the **Apache License 2.0**. See the [LICENSE](LICENSE) file for details.
 By using this repository, you agree to comply with the terms of the Apache 2.0 License.
