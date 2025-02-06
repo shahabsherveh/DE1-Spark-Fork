@@ -163,3 +163,4 @@ cython_debug/
 __temp__/
 uppmax-openrc.sh
 DE-2025/data/crawl
+__temp_dir__
