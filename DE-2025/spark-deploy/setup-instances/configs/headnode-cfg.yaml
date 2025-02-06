@@ -135,3 +135,29 @@ runcmd:
   - printf "\n=========================================================================================================\n"
   - printf "\n\nStart Spark's master node ...\n"
   - [su, ubuntu, -c, "/home/ubuntu/spark/sbin/start-master.sh"]
+
+  - printf "..."
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n\nClone the GitHub Repository and push data files to HDFS...\n"
+  - [su, ubuntu, -c, git clone https://github.com/usamazf/DE1-Spark.git /home/ubuntu/DE1-Spark]
+  - cd /home/ubuntu/DE1-Spark/DE-2025/data/
+
+  - printf "..."
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n\nPush the existing data files to HDFS...\n"
+  - [su, ubuntu, -c, /home/ubuntu/hadoop/bin/hdfs dfs -mkdir /data]
+  - [su, ubuntu, -c, /home/ubuntu/hadoop/bin/hdfs dfs -put books /data/]
+  - [su, ubuntu, -c, /home/ubuntu/hadoop/bin/hdfs dfs -put others /data/]
+  
+  - printf "..."
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n\nRun crawl script to download crawl data and push it to hdfs...\n"
+  - [su, ubuntu, -c, /home/ubuntu/hadoop/bin/hdfs dfs -mkdir /data/crawl]
+  - chmod +x put_crawl_data.sh
+  - [su, ubuntu, -c, ./get_crawl_data.sh]

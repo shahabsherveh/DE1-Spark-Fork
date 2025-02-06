@@ -5,12 +5,12 @@ github_access_token:
 ssh_authorized_keys: null
 
 instances:
-  name_prefix: usama              # Used to create the node name
+  name_prefix: SPARK              # Used to create the node name
                                   # Template: prefix-int(4)-headnode
                                   # Template: prefix-int(4)-worker-n
   headnode:
     instance_flavor: ssc.xlarge.highcpu
-    instance_source: Ubuntu 22.04 - 2024.01.15
+    instance_source: b1709333-2364-4d80-9694-fe2a3f4a16f5
     authorized_keys: usama-spark-lecture-key
     private_network: UPPMAX 2025/1-1 Internal IPv4 Network
     security_groups:
@@ -20,10 +20,10 @@ instances:
     floating_ip_addr: null
     instance_configs: configs/headnode-cfg.yaml
   workernodes:
-    numworkers: 10
+    numworkers: 20
     workercfgs:
       instance_flavor: ssc.xlarge.highcpu
-      instance_source: Ubuntu 22.04 - 2024.01.15
+      instance_source: b1709333-2364-4d80-9694-fe2a3f4a16f5
       authorized_keys: usama-spark-lecture-key
       private_network: UPPMAX 2025/1-1 Internal IPv4 Network
       security_groups:
