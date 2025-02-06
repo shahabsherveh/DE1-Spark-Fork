@@ -6,13 +6,15 @@ max_page_to_crawl=20
 
 # Make a temporary folder to store intermediate results
 mkdir __temp__ && cd __temp__
-wget $main_link_address
+wget -nv $main_link_address
 gzip -d wet.paths.gz
+
+mkdir -p $output_files_path
 
 # Process top
 while IFS= read -r line; do
     # https://data.commoncrawl.org/crawl-data/CC-MAIN-2023-23/segments/1685224657735.85/wet/CC-MAIN-20230610164417-20230610194417-00799.warc.wet.gz
-    echo "Downloading https://data.commoncrawl.org/$line"
+    # echo "Downloading https://data.commoncrawl.org/$line"
     wget -nv "https://data.commoncrawl.org/$line"
 
     # Extract the currently downloaded WET file
