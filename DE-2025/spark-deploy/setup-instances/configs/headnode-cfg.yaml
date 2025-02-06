@@ -160,4 +160,4 @@ runcmd:
   - printf "\n\nRun crawl script to download crawl data and push it to hdfs...\n"
   - [su, ubuntu, -c, /home/ubuntu/hadoop/bin/hdfs dfs -mkdir /data/crawl]
   - chmod +x put_crawl_data.sh
-  - [su, ubuntu, -c, ./get_crawl_data.sh]
+  - [su, ubuntu, -c, ./put_crawl_data.sh]
