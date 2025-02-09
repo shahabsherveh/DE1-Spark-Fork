@@ -125,15 +125,13 @@ sudo /bin/bash -c 'for ((i = 1 ; i <= 255 ; i++)); do echo "192.168.2.${i} de1-s
 
 
 ## Step 5: Submit Spark applications
-In order to start submitting spark applications via jupyter notebooks first run the jupyter instance according to instructions provided in Lab / Assignment 1 of the course (including password setup, authentication certificates etc.).
+In order to start submitting spark applications via a notebook follow thes steps:
 
-```
-jupyter lab
-```
+* First run the jupyter instance according to instructions provided in Lab / Assignment 1 of the course (including password setup, authentication certificates etc.).
 
 - Now you can run the examples from the lectures in your own notebook. Using the Jupyter Notebook, navigate into the directory you just cloned from GitHub.
 
-- Start with `DE-2025/examples/Lecture1_Example0_with_spark.ipynb`
+- Start with [Lecture1_Example0_with_spark.ipynb](https://github.com/usamazf/DE1-Spark/blob/main/DE-2025/examples/python/Lecture1_Example2_with_spark.ipynb)
 
 - Ensure the host is set correctly for the Spark master, and HDFS namenode, to: `192.168.2.251`
 
@@ -142,16 +140,13 @@ When working on your own notebooks, save them in your own repository (for exampl
 
 When you start your application, you'll see it running in the Spark master web GUI (link at the top). If you hover over the link to your application, you'll see the port number for the Web GUI for your application. It will be 4040, 4041,... You can open the GUI in your web browser like this (e.g.): http://localhost:4040
 
-
-***
-___
 ---
 
 # General Guidelines:
 
 You need to share the Spark cluster with the other students, hence keep the following general principles in mind:
 
-1. Start your application with dynamic allocation enabled, a timeout of no more than 30 seconds, and a cap on CPU cores (4 cores max per application): (fixed driver/blockManager port for security group)
+1. Start your application with dynamic allocation enabled, a timeout of no more than **30 seconds**, and a cap on CPU cores (**4 cores max**): (fixed driver/blockManager port for security group)
 
         spark_session = SparkSession\
                 .builder\
