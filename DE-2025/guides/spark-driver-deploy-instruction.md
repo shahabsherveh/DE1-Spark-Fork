@@ -1,4 +1,4 @@
-# Spark deploy instructions
+# Spark Driver Deployment Instructions
 
 Your Spark applications will run in the cluster, but the 'driver' application will run on your machine.
 Recommend 2GB+ RAM and 1 CPU cores for your driver VM.
@@ -12,7 +12,8 @@ The web GUIs for Spark and HDFS are not open publicly, you will need to configur
 To do this, create or modify the file ~/.ssh/config on your local (laptop) computer by adding a section like the one shown below:
 (This is unix-like systems and (Windows Subsystem for Linux) WSL, you may have to modify the instructions if you are using some other system).
 
-Replace 130.238.x.y and ~/.ssh/id_rsa with your floating IP and key path appropriately:
+Replace `130.238.x.y` and `~/.ssh/id_rsa` with your floating IP and key path appropriately:
+
 ```
 Host 130.238.x.y
 KexAlgorithms +diffie-hellman-group1-sha1
@@ -50,11 +51,9 @@ KexAlgorithms +diffie-hellman-group1-sha1
 ```
 
 > [!NOTE]
-> - The 'IdentityFile' line follows the same syntax whether you are using a .pem key file, or an OpenSSH key file (without an extension), as shown above. For a .pem, write something like this:
-      IdentityFile ~/.ssh/my_key.pem
+> - The 'IdentityFile' line follows the same syntax whether you are using a .pem key file, or an OpenSSH key file (without an extension), as shown above. For a .pem, write something like this: `IdentityFile ~/.ssh/my_key.pem`
 > - If you are using Windows Subsystem for Linux (WSL), the path to the identity file needs to be relative to the root of the filesystem for Ubuntu.
-> - You may get a warning about an "UNPROTECTED PRIVATE KEY FILE!" - to fix this, change the permissions on your key file to 400.
-chmod 400 ~/.ssh/mykey.pem
+> - You may get a warning about an "UNPROTECTED PRIVATE KEY FILE!" - to fix this, change the permissions on your key file to 400. i.e. `chmod 400 ~/.ssh/mykey.pem`
 > - If you are using Windows Subsystem for Linux (WSL), you may need to copy your SSH key into the Ubuntu filesystem to be able to modify the permissions.
 
 ## Step 2: Verify Local Machine Setup
@@ -144,7 +143,11 @@ When working on your own notebooks, save them in your own repository (for exampl
 When you start your application, you'll see it running in the Spark master web GUI (link at the top). If you hover over the link to your application, you'll see the port number for the Web GUI for your application. It will be 4040, 4041,... You can open the GUI in your web browser like this (e.g.): http://localhost:4040
 
 
-## General Guidelines:
+***
+___
+---
+
+# General Guidelines:
 
 You need to share the Spark cluster with the other students, hence keep the following general principles in mind:
 
