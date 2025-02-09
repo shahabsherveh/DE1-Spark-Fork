@@ -34,3 +34,6 @@ echo "c.ServerApp.keyfile = u'$auth_certificate_path/mykey.key'" >> /home/ubuntu
 echo "c.ServerApp.ip = '*'" >> /home/ubuntu/.jupyter/jupyter_server_config.py
 echo "c.ServerApp.open_browser = False" >> /home/ubuntu/.jupyter/jupyter_server_config.py
 echo "c.ServerApp.port = 8888" >> /home/ubuntu/.jupyter/jupyter_server_config.py
+
+# Setup Java path on the driver
+echo "export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64" >> /home/ubuntu/.bashrc 

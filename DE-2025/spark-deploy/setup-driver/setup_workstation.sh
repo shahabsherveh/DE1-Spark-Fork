@@ -17,7 +17,7 @@ sed -i "s/#\$nrconf{kernelhints} = -1;/\$nrconf{kernelhints} = -1;/g" /etc/needr
 apt update; apt -y upgrade
 
 # Install required tools and dependencies
-apt -y install curl tmux net-tools
+apt -y install curl tmux net-tools openjdk-11-jdk-headless
 
 # Install pip3 package manager and virtual environment
 apt -y install python3 python3-pip python3-venv
