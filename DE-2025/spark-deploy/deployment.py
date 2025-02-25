@@ -108,22 +108,24 @@ def add_workernodes(num_nodes, head_ip = None, config_file="configs/instance-cfg
     worker_ips = launch_workernodes(name_prefix=f"{configs['instances']['name_prefix']}-{identifier}", num_nodes=num_nodes, head_ip=head_ip, configs=configs["instances"]["workernodes"]["workercfgs"], ssh_keys=None)
 
     with open(ipaddr_path, "a") as f:
-        f.writelines(worker_ips)
+        [f.write(f"{worker_ip}\n") for worker_ip in worker_ips]
 
 def del_workernodes(num_nodes, manager_port = 5200, ipaddr_path="__temp_dir__/cluster_ips.txt"):
     ip_addresses = open(ipaddr_path).readlines()
     count = 0
     for ip_addr in reversed(ip_addresses.copy()):
         if (count >= num_nodes): break
-        response = requests.post(f"http://{ip_addr}:{manager_port}/drain-node", timeout=300)
+        response = requests.post(f"http://{ip_addr.strip()}:{manager_port}/drain-node", timeout=300)
         if response.status_code == 200:
-            delete_instance(search_opts={"ip": ip_addr})
+            delete_instance(search_opts={"ip": ip_addr.strip()})
             ip_addresses.remove(ip_addr)
             count += 1
         else:
             print(response.status_code, response.content)
+
     # Update the instance ip address list
-    open(ipaddr_path, "w").writelines(ip_addresses)
+    with open(ipaddr_path, "w") as f:
+        [f.write(f"{ip_addr}\n") for ip_addr in ip_addresses]
 
 def full_deployment(config_file = "configs/instance-cfg.yaml", keypair_path="__temp_dir__/keypair", keyname="id_rsa", ipaddr_path="__temp_dir__/cluster_ips.txt"):
     # Open the configurations file
@@ -152,8 +154,8 @@ def full_deployment(config_file = "configs/instance-cfg.yaml", keypair_path="__t
     worker_ips = launch_workernodes(name_prefix=f"{configs['instances']['name_prefix']}-{identifier}", num_nodes=configs["instances"]["workernodes"]["numworkers"], head_ip=head_ip, configs=configs["instances"]["workernodes"]["workercfgs"], ssh_keys=ssh_keys)
 
     with open(ipaddr_path, "a") as f:
-        f.writeline(head_ip)
-        f.writelines(worker_ips)
+        f.write(f"{head_ip}\n")
+        [f.write(f"{worker_ip}\n") for worker_ip in worker_ips]
 
 if __name__ == "__main__":
     fire.Fire({
