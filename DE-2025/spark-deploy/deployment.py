@@ -153,7 +153,7 @@ def full_deployment(config_file = "configs/instance-cfg.yaml", keypair_path="__t
     print("\nDeploying worker nodes ... ")
     worker_ips = launch_workernodes(name_prefix=f"{configs['instances']['name_prefix']}-{identifier}", num_nodes=configs["instances"]["workernodes"]["numworkers"], head_ip=head_ip, configs=configs["instances"]["workernodes"]["workercfgs"], ssh_keys=ssh_keys)
 
-    with open(ipaddr_path, "a") as f:
+    with open(ipaddr_path, "w") as f:
         f.write(f"{head_ip}\n")
         [f.write(f"{worker_ip}\n") for worker_ip in worker_ips]
 
