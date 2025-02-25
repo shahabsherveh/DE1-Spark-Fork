@@ -23,7 +23,7 @@ instances:
     numworkers: 10
     workercfgs:
       instance_flavor: ssc.xlarge.highcpu
-      instance_source: b1709333-2364-4d80-9694-fe2a3f4a16f5
+      instance_source: ef3beff5-d2c8-42d0-a17e-e45d13392745
       authorized_keys: usama-spark-lecture-key
       private_network: UPPMAX 2025/1-1 Internal IPv4 Network
       security_groups:
