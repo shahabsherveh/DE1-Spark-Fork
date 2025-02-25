@@ -104,7 +104,7 @@ def get_ip_address(instance, private_net):
     # Return the obtained ip-addresses
     return ip_address
 
-def delete_instance(server_name):
+def delete_instance(search_opts):
     # Get OpenStack configruations from 
     # environment variables
     loader = loading.get_plugin_loader("password")
@@ -124,8 +124,8 @@ def delete_instance(server_name):
 
     # Find the server using its name since we
     # need its id to perform delete operation
-    server_list = nova.servers.list(search_opts={"name": server_name})
+    server_list = nova.servers.list(search_opts=search_opts)
     if len(server_list) > 0:
         nova.servers.delete(server_list[0].id)
     else:
-        raise Exception(f"Unable to find a matching server with name: {server_name}")
+        raise Exception(f"Unable to find a matching server with: {search_opts}")

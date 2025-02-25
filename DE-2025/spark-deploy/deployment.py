@@ -92,7 +92,7 @@ def launch_workernodes(name_prefix, num_nodes, head_ip, configs, ssh_keys):
     # Retrun worker ip addresses
     return ip_addresses
 
-def add_workernodes(num_nodes, head_ip = None, config_file="configs/instance-cfg.yaml", keypair_path="__temp_dir__/keypair", keyname="id_rsa"):
+def add_workernodes(num_nodes, head_ip = None, config_file="configs/instance-cfg.yaml", keypair_path="__temp_dir__/keypair", keyname="id_rsa", ipaddr_path="__temp_dir__/cluster_ips.txt"):
     # Open the configurations file
     print("Parsing provided configurations file... ")
     configs = parse_configs(config_path=config_file)
@@ -107,17 +107,25 @@ def add_workernodes(num_nodes, head_ip = None, config_file="configs/instance-cfg
     print("\nDeploying worker nodes ... ")
     worker_ips = launch_workernodes(name_prefix=f"{configs['instances']['name_prefix']}-{identifier}", num_nodes=num_nodes, head_ip=head_ip, configs=configs["instances"]["workernodes"]["workercfgs"], ssh_keys=None)
 
-# def del_workernodes(num_nodes, head_ip, manager_port = 5200):
-#     response = requests.post(f"http://{head_ip}:{manager_port}/drain-node", params={"node_count": num_nodes}, timeout=120)
-#     if response.status_code == 200:
-#         resp_dict = response.json()
-#         print(resp_dict)
-#         for servername in resp_dict["nodes"]:
-#             delete_instance(servername)
-#     else:
-#         print(response.status_code, response.content)
+    with open(ipaddr_path, "a") as f:
+        f.writelines(worker_ips)
 
-def full_deployment(config_file = "configs/instance-cfg.yaml", keypair_path="__temp_dir__/keypair", keyname="id_rsa"):
+def del_workernodes(num_nodes, manager_port = 5200, ipaddr_path="__temp_dir__/cluster_ips.txt"):
+    ip_addresses = open(ipaddr_path).readlines()
+    count = 0
+    for ip_addr in reversed(ip_addresses.copy()):
+        if (count >= num_nodes): break
+        response = requests.post(f"http://{ip_addr}:{manager_port}/drain-node", timeout=300)
+        if response.status_code == 200:
+            delete_instance(search_opts={"ip": ip_addr})
+            ip_addresses.remove(ip_addr)
+            count += 1
+        else:
+            print(response.status_code, response.content)
+    # Update the instance ip address list
+    open(ipaddr_path, "w").writelines(ip_addresses)
+
+def full_deployment(config_file = "configs/instance-cfg.yaml", keypair_path="__temp_dir__/keypair", keyname="id_rsa", ipaddr_path="__temp_dir__/cluster_ips.txt"):
     # Open the configurations file
     print("Parsing provided configurations file... ")
     configs = parse_configs(config_path=config_file)
@@ -143,10 +151,13 @@ def full_deployment(config_file = "configs/instance-cfg.yaml", keypair_path="__t
     print("\nDeploying worker nodes ... ")
     worker_ips = launch_workernodes(name_prefix=f"{configs['instances']['name_prefix']}-{identifier}", num_nodes=configs["instances"]["workernodes"]["numworkers"], head_ip=head_ip, configs=configs["instances"]["workernodes"]["workercfgs"], ssh_keys=ssh_keys)
 
+    with open(ipaddr_path, "a") as f:
+        f.writeline(head_ip)
+        f.writelines(worker_ips)
 
 if __name__ == "__main__":
     fire.Fire({
         "--full": full_deployment,
         "--add-nodes": add_workernodes,
-        # "--del-nodes": del_workernodes,
+        "--del-nodes": del_workernodes,
     })

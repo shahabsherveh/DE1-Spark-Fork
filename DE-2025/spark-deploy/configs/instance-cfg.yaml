@@ -20,7 +20,7 @@ instances:
     floating_ip_addr: null
     instance_configs: configs/headnode-cfg.yaml
   workernodes:
-    numworkers: 20
+    numworkers: 10
     workercfgs:
       instance_flavor: ssc.xlarge.highcpu
       instance_source: b1709333-2364-4d80-9694-fe2a3f4a16f5

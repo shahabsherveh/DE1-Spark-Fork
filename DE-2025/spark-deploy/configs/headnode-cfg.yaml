@@ -90,7 +90,7 @@ runcmd:
   - printf "\n=========================================================================================================\n"
   - printf "\n\nSetup configuration files for HADOOP ...\n"
   - [su, ubuntu, -c, sed -i -e "s#<configuration>#<configuration>\n<property><name>fs.defaultFS</name><value>hdfs://0.0.0.0:9000</value></property>#g" /home/ubuntu/hadoop/etc/hadoop/core-site.xml]
-  - [su, ubuntu, -c, sed -i -e "s#<configuration>#<configuration>\n<property><name>dfs.namenode.name.dir</name><value>/home/ubuntu/hdfs-data</value></property>\n<property><name>dfs.replication</name><value>2</value></property>#g" /home/ubuntu/hadoop/etc/hadoop/hdfs-site.xml]
+  - [su, ubuntu, -c, sed -i -e "s#<configuration>#<configuration>\n<property><name>dfs.namenode.name.dir</name><value>/home/ubuntu/hdfs-data</value></property>\n<property><name>dfs.replication</name><value>5</value></property>#g" /home/ubuntu/hadoop/etc/hadoop/hdfs-site.xml]
 
   - printf "..."
   - printf "\n=========================================================================================================\n"
@@ -153,11 +153,34 @@ runcmd:
   - [su, ubuntu, -c, /home/ubuntu/hadoop/bin/hdfs dfs -put books /data/]
   - [su, ubuntu, -c, /home/ubuntu/hadoop/bin/hdfs dfs -put others /data/]
   
+  # - printf "..."
+  # - printf "\n=========================================================================================================\n"
+  # - printf "\n=========================================================================================================\n"
+  # - printf "\n=========================================================================================================\n"
+  # - printf "\n\nRun crawl script to download crawl data and push it to hdfs...\n"
+  # - [su, ubuntu, -c, /home/ubuntu/hadoop/bin/hdfs dfs -mkdir /data/crawl]
+  # - chmod +x put_crawl_data.sh
+  # - [su, ubuntu, -c, ./put_crawl_data.sh]
+
   - printf "..."
   - printf "\n=========================================================================================================\n"
   - printf "\n=========================================================================================================\n"
   - printf "\n=========================================================================================================\n"
-  - printf "\n\nRun crawl script to download crawl data and push it to hdfs...\n"
-  - [su, ubuntu, -c, /home/ubuntu/hadoop/bin/hdfs dfs -mkdir /data/crawl]
-  - chmod +x put_crawl_data.sh
-  - [su, ubuntu, -c, ./put_crawl_data.sh]
+  - printf "\n\nCloning core repository ...\n"
+  - [su, ubuntu, -c, git clone https://github.com/usamazf/DE1-Spark.git /DE1-Spark]
+
+  - printf "..."
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "Installing dependencies for manager application...\n"
+  - [su, ubuntu, -c, pip3 install -r /DE1-Spark/DE-2025/spark-deploy/manager/requirements.txt]
+
+  - printf "..."
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "Starting manager application ...\n"
+  - [su, ubuntu, -c, tmux new-session -d -s managerService]
+  - [su, ubuntu, -c, tmux send-keys -t managerService "python3 /DE1-Spark/DE-2025/spark-deploy/manager/manager.py --host=0.0.0.0 --port=5200 --debug" C-m]
+  - [su, ubuntu, -c, tmux detach -s managerService]

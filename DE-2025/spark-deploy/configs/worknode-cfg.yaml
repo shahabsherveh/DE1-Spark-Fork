@@ -124,3 +124,26 @@ runcmd:
   - printf "\n=========================================================================================================\n"
   - printf "\n\nStart Spark's worker node ...\n"
   - [su, ubuntu, -c, "/home/ubuntu/spark/sbin/start-worker.sh spark://$(cat /HEAD-IP.txt):7077"]
+
+  - printf "..."
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n\nCloning core repository ...\n"
+  - [su, ubuntu, -c, git clone https://github.com/usamazf/DE1-Spark.git /DE1-Spark]
+
+  - printf "..."
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "Installing dependencies for manager application...\n"
+  - [su, ubuntu, -c, pip3 install -r /DE1-Spark/DE-2025/spark-deploy/manager/requirements.txt]
+
+  - printf "..."
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "Starting manager application ...\n"
+  - [su, ubuntu, -c, tmux new-session -d -s managerService]
+  - [su, ubuntu, -c, tmux send-keys -t managerService "python3 /DE1-Spark/DE-2025/spark-deploy/manager/manager.py --host=0.0.0.0 --port=5200 --debug" C-m]
+  - [su, ubuntu, -c, tmux detach -s managerService]
