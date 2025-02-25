@@ -4,7 +4,7 @@ import argparse
 import subprocess
 
 import json
-from helpers import generate_cluster_summary
+
 from flask import (
    Flask,
    request,

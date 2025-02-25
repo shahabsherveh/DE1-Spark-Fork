@@ -2,6 +2,7 @@ import os
 import fire
 import random
 import time
+import requests
 
 from utils.instance import create_instance, delete_instance
 from utils.configs import parse_configs, write_configs
@@ -124,8 +125,7 @@ def del_workernodes(num_nodes, manager_port = 5200, ipaddr_path="__temp_dir__/cl
             print(response.status_code, response.content)
 
     # Update the instance ip address list
-    with open(ipaddr_path, "w") as f:
-        [f.write(f"{ip_addr}\n") for ip_addr in ip_addresses]
+    open(ipaddr_path, "w").writelines(ip_addresses)
 
 def full_deployment(config_file = "configs/instance-cfg.yaml", keypair_path="__temp_dir__/keypair", keyname="id_rsa", ipaddr_path="__temp_dir__/cluster_ips.txt"):
     # Open the configurations file
