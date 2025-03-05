@@ -56,10 +56,18 @@ runcmd:
   - printf "\n=========================================================================================================\n"
   - printf "\n=========================================================================================================\n"
   - printf "\n\nDownloading and extracting Spark ...\n"
-  - [su, ubuntu, -c, wget -nv https://dlcdn.apache.org/spark/spark-3.5.4/spark-3.5.4-bin-hadoop3.tgz -P /home/ubuntu/]
-  - [su, ubuntu, -c, tar -zxf /home/ubuntu/spark-3.5.4-bin-hadoop3.tgz -C /home/ubuntu/]
-  - [su, ubuntu, -c, mv /home/ubuntu/spark-3.5.4-bin-hadoop3 /home/ubuntu/spark]
+  - [su, ubuntu, -c, wget -nv https://dlcdn.apache.org/spark/spark-3.5.5/spark-3.5.5-bin-hadoop3.tgz -P /home/ubuntu/]
+  - [su, ubuntu, -c, tar -zxf /home/ubuntu/spark-3.5.5-bin-hadoop3.tgz -C /home/ubuntu/]
+  - [su, ubuntu, -c, mv /home/ubuntu/spark-3.5.5-bin-hadoop3 /home/ubuntu/spark]
   - [su, ubuntu, -c, chown -R ubuntu:ubuntu /home/ubuntu/spark]
+
+  - printf "..."
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n\nPerforming Clean-ups ...\n"
+  - [su, ubuntu, -c, rm -rf /home/ubuntu/hadoop-3.4.1.tar.gz]
+  - [su, ubuntu, -c, rm -rf /home/ubuntu/spark-3.5.5-bin-hadoop3.tgz]
 
   - printf "..."
   - printf "\n=========================================================================================================\n"
