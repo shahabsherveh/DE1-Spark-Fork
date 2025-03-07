@@ -176,7 +176,19 @@ runcmd:
   - [su, ubuntu, -c, /home/ubuntu/hadoop/bin/hdfs dfs -mkdir /data]
   - [su, ubuntu, -c, /home/ubuntu/hadoop/bin/hdfs dfs -put books /data/]
   - [su, ubuntu, -c, /home/ubuntu/hadoop/bin/hdfs dfs -put others /data/]
-  
+
+  # - printf "..."
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n=========================================================================================================\n"
+  - printf "\n\nDownloading reddit data and push it into HDFS\n"
+  - wget -P /tmp https://zenodo.org/records/1043504/files/corpus-webis-tldr-17.zip
+  - apt update
+  - apt install -y unzip
+  - unzip /tmp/corpus-webis-tldr-17.zip -d /tmp
+  - chown -R ubuntu:ubuntu /tmp/corpus-webis-tldr-17.json
+  - [su, ubuntu, -c, /home/ubuntu/hadoop/bin/hdfs dfs -put  /tmp/corpus-webis-tldr-17.json /data/]
+  - rm /tmp/corpus-webis-tldr-17.json
   # - printf "..."
   # - printf "\n=========================================================================================================\n"
   # - printf "\n=========================================================================================================\n"
