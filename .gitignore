@@ -165,3 +165,7 @@ uppmax-openrc.sh
 DE-2025/data/crawl
 __temp_dir__
 DE-2025/data/others/btcusd_1-min_data.csv
+
+# Cloud environment variables
+cloud_rc.sh
+auto_complete.rc
