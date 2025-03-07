@@ -23,15 +23,15 @@ mkdir $auth_certificate_path
 openssl req -x509 -nodes -days 30 -newkey rsa:2048 -keyout $auth_certificate_path/mykey.key -out $auth_certificate_path/mycert.pem -subj "/C=SE/ST=UPPSALA"
 
 # Setup jupyter notebook password
-jupyter server password
+python3 -m jupyter server password
 
 # Generate Jupyter configurations file
-jupyter server --generate-config -y
+python3 -m jupyter server --generate-config -y
 
 # Setup authentication related values
 echo "c.ServerApp.certfile = u'$auth_certificate_path/mycert.pem'" >> /home/ubuntu/.jupyter/jupyter_server_config.py
 echo "c.ServerApp.keyfile = u'$auth_certificate_path/mykey.key'" >> /home/ubuntu/.jupyter/jupyter_server_config.py
-echo "c.ServerApp.ip = '*'" >> /home/ubuntu/.jupyter/jupyter_server_config.py
+echo "c.ServerApp.ip = '0.0.0.0'" >> /home/ubuntu/.jupyter/jupyter_server_config.py
 echo "c.ServerApp.open_browser = False" >> /home/ubuntu/.jupyter/jupyter_server_config.py
 echo "c.ServerApp.port = 8888" >> /home/ubuntu/.jupyter/jupyter_server_config.py
 
