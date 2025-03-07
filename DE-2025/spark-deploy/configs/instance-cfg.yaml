@@ -5,30 +5,30 @@ github_access_token:
 ssh_authorized_keys: null
 
 instances:
-  name_prefix: SPARK              # Used to create the node name
+  name_prefix: group-3-spark              # Used to create the node name
                                   # Template: prefix-int(4)-headnode
                                   # Template: prefix-int(4)-worker-n
   headnode:
     instance_flavor: ssc.xlarge.highcpu
     instance_source: b1709333-2364-4d80-9694-fe2a3f4a16f5
-    authorized_keys: usama-spark-lecture-key
+    authorized_keys: db1
     private_network: UPPMAX 2025/1-1 Internal IPv4 Network
     security_groups:
       - default
-      - usama-spark-sg
+      - group_3_spark
     floating_ip_pool: null
     floating_ip_addr: null
     instance_configs: configs/headnode-cfg.yaml
   workernodes:
-    numworkers: 10
+    numworkers: 4
     workercfgs:
       instance_flavor: ssc.xlarge.highcpu
       instance_source: SPARK-CLUSTER-SNAPSHOT-BASE
-      authorized_keys: usama-spark-lecture-key
+      authorized_keys: db1
       private_network: UPPMAX 2025/1-1 Internal IPv4 Network
       security_groups:
         - default
-        - usama-spark-sg
+        - group_3_spark
       floating_ip_pool: null
       floating_ip_addr: null
       instance_configs: configs/worknode-cfg.yaml
