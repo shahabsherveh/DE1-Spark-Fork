@@ -20,6 +20,7 @@ packages:
   - ca-certificates 
   - curl 
   - software-properties-common
+  - unzip
 
 byobu_default: system
 
@@ -183,13 +184,11 @@ runcmd:
   - printf "\n=========================================================================================================\n"
   - printf "\n=========================================================================================================\n"
   - printf "\n\nDownloading reddit data and push it into HDFS\n"
-  - wget -P /tmp https://zenodo.org/records/1043504/files/corpus-webis-tldr-17.zip
-  - apt update
-  - apt install -y unzip
-  - unzip /tmp/corpus-webis-tldr-17.zip -d /tmp
-  - chown -R ubuntu:ubuntu /tmp/corpus-webis-tldr-17.json
-  - [su, ubuntu, -c, /home/ubuntu/hadoop/bin/hdfs dfs -put  /tmp/corpus-webis-tldr-17.json /data/]
-  - rm /tmp/corpus-webis-tldr-17.json
+  - wget -P https://zenodo.org/records/1043504/files/corpus-webis-tldr-17.zip
+  - unzip corpus-webis-tldr-17.zip
+  - chown -R ubuntu:ubuntu corpus-webis-tldr-17.json
+  - [su, ubuntu, -c, /home/ubuntu/hadoop/bin/hdfs dfs -mkdir /data/reddit]
+  - [su, ubuntu, -c, /home/ubuntu/hadoop/bin/hdfs dfs -moveFromLocal  corpus-webis-tldr-17.json /data/reddit/]
   # - printf "..."
   # - printf "\n=========================================================================================================\n"
   # - printf "\n=========================================================================================================\n"
