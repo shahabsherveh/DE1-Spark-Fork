@@ -134,6 +134,7 @@ runcmd:
   - printf "\n\nSetup configuration files for SPARK ...\n"
   - [su, ubuntu, -c, echo "spark.eventLog.enabled true" >> /home/ubuntu/spark/conf/spark-defaults.conf]
   - [su, ubuntu, -c, echo "spark.eventLog.compress false" >> /home/ubuntu/spark/conf/spark-defaults.conf]
+  - [su, ubuntu, -c, /home/ubuntu/hadoop/bin/hdfs dfs -mkdir /spark-logs]
   - [su, ubuntu, -c, echo "spark.eventLog.dir hdfs://localhost:9000/spark-logs" >> /home/ubuntu/spark/conf/spark-defaults.conf]
   - [su, ubuntu, -c, echo "spark.history.fs.logDirectory hdfs://localhost:9000/spark-logs" >> /home/ubuntu/spark/conf/spark-defaults.conf]
 
