@@ -108,8 +108,6 @@ runcmd:
   - printf "\n\nStart HDFS daemons ...\n"
   - [su, ubuntu, -c, "/home/ubuntu/hadoop/bin/hdfs namenode -format"]
   - [su, ubuntu, -c, "/home/ubuntu/hadoop/bin/hdfs --daemon start namenode"]
-  - [su, ubuntu, -c, "/home/ubuntu/hadoop/bin/hdfs --daemon start datanode"]
-  - [su, ubuntu, -c, "/home/ubuntu/hadoop/sbin/start-dfs.sh"]
 
   - printf "..."
   - printf "\n=========================================================================================================\n"
