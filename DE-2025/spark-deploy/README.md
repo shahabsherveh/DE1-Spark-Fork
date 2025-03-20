@@ -2,7 +2,7 @@
 
 ## Setup OpenStack API
 
-- Setup the environment variable for authentication according to here https://docs.openstack.org/api-quick-start/api-quick-start.html#authentication-and-api-request-workflow
+- Setup the environment variable for authentication according to here <https://docs.openstack.org/api-quick-start/api-quick-start.html#authentication-and-api-request-workflow>
 
 ## Configure the Master and Worker VMs
 
@@ -35,3 +35,15 @@
 
   `ssh-add .ssh/id_rsa`
 - Now it is possible to ssh to master and worker nodes through our driver.
+
+## Inject the Data
+
+- ssh to the master node and run the following commands there
+
+```bash
+wget -P https://zenodo.org/records/1043504/files/corpus-webis-tldr-17.zip
+unzip corpus-webis-tldr-17.zip
+chown -R ubuntu:ubuntu corpus-webis-tldr-17.json
+/home/ubuntu/hadoop/bin/hdfs dfs -mkdir /data/reddit
+/home/ubuntu/hadoop/bin/hdfs dfs -moveFromLocal  corpus-webis-tldr-17.json /data/reddit/]
+```
