@@ -9,26 +9,26 @@ instances:
                                   # Template: prefix-int(4)-headnode
                                   # Template: prefix-int(4)-worker-n
   headnode:
-    instance_flavor: ssc.xlarge.highcpu
+    instance_flavor: ssc.medium.highmem
     instance_source: b1709333-2364-4d80-9694-fe2a3f4a16f5
     authorized_keys: db1
     private_network: UPPMAX 2025/1-1 Internal IPv4 Network
     security_groups:
       - default
-      - group_3_spark
+      - group-3-spark
     floating_ip_pool: null
     floating_ip_addr: null
     instance_configs: configs/headnode-cfg.yaml
   workernodes:
     numworkers: 4
     workercfgs:
-      instance_flavor: ssc.xlarge.highcpu
+      instance_flavor: ssc.medium.highmem
       instance_source: SPARK-CLUSTER-SNAPSHOT-BASE
       authorized_keys: db1
       private_network: UPPMAX 2025/1-1 Internal IPv4 Network
       security_groups:
         - default
-        - group_3_spark
+        - group-3-spark
       floating_ip_pool: null
       floating_ip_addr: null
       instance_configs: configs/worknode-cfg.yaml
