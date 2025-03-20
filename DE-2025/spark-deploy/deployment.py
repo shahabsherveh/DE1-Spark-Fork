@@ -116,13 +116,13 @@ def del_workernodes(num_nodes, manager_port = 5200, ipaddr_path="__temp_dir__/cl
     count = 0
     for ip_addr in reversed(ip_addresses.copy()):
         if (count >= num_nodes): break
-        response = requests.post(f"http://{ip_addr.strip()}:{manager_port}/drain-node", timeout=300)
-        if response.status_code == 200:
-            delete_instance(search_opts={"ip": ip_addr.strip()})
-            ip_addresses.remove(ip_addr)
-            count += 1
-        else:
-            print(response.status_code, response.content)
+        #response = requests.post(f"http://{ip_addr.strip()}:{manager_port}/drain-node", timeout=300)
+        #if response.status_code == 200:
+        delete_instance(search_opts={"ip": ip_addr.strip()})
+        ip_addresses.remove(ip_addr)
+        count += 1
+        #else:
+        #    print(response.status_code, response.content)
 
     # Update the instance ip address list
     open(ipaddr_path, "w").writelines(ip_addresses)
