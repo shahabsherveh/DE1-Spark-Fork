@@ -99,7 +99,7 @@ runcmd:
   - printf "\n=========================================================================================================\n"
   - printf "\n\nSetup configuration files for HADOOP ...\n"
   - [su, ubuntu, -c, sed -i -e "s#<configuration>#<configuration>\n<property><name>fs.defaultFS</name><value>hdfs://0.0.0.0:9000</value></property>#g" /home/ubuntu/hadoop/etc/hadoop/core-site.xml]
-  - [su, ubuntu, -c, sed -i -e "s#<configuration>#<configuration>\n<property><name>dfs.namenode.name.dir</name><value>/home/ubuntu/hdfs-data</value></property>\n<property><name>dfs.replication</name><value>5</value></property>#g" /home/ubuntu/hadoop/etc/hadoop/hdfs-site.xml]
+  - [su, ubuntu, -c, sed -i -e "s#<configuration>#<configuration>\n<property><name>dfs.namenode.name.dir</name><value>/home/ubuntu/hdfs-data</value></property>\n<property><name>dfs.replication</name><value>4</value></property>#g" /home/ubuntu/hadoop/etc/hadoop/hdfs-site.xml]
 
   - printf "..."
   - printf "\n=========================================================================================================\n"
